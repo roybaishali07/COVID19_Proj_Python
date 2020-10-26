@@ -201,7 +201,7 @@ def countryMenu():
     print("\n0.Return to previous menu")
     print("\n#.To exit")
 
-    ch =  int(input("\nEnter your choice"))
+    ch =  int(input("\nEnter your choice:"))
 
     if ch == '1':
         worldMap()
@@ -220,8 +220,6 @@ def countryMenu():
 
 def pieChart():
     covid = pd.read_csv('covid_19_india.csv')
-    print(covid)
-    
-    covid.groupby(['Date'])['Confirmed','Deaths',''    
+    print(covid)   
 
 main()
