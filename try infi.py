@@ -23,8 +23,8 @@ except:
     missing.append("altair")
 #import baishali as goru
 if missing != []:
-    print('''\n\nYou are missing some packages in your system that are required to run this program.
-    Please execute these following commands in your terminal to resolve this issue.''')
+    print(f'''\n\nYou are missing {len(missing)} package(s) in your system that are required to run this program.
+    Please execute this following command(s) in your terminal to resolve this issue.''')
     for i in missing:
         print(f"\nMissing : {i}\nCommand : {requirement[i]}")
     exit()
