@@ -1,9 +1,11 @@
 import pandas as pd
 import geopandas as geo
-import numpy as np
+import numpy as np#no problem😇
 import matplotlib.pyplot as plt
 #import coronavirus as cv
 import altair as alt
+#import baishali as goru
+#fuck uju with hardie
 
 
 def main():
