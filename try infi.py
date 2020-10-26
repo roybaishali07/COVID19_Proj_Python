@@ -120,8 +120,6 @@ def pieChart():
     on=['Province/State', 'Country/Region', 'Date', 'Lat', 'Long']
     )
 
-    print(full_table)
-
     confirmed_cases = full_table['Confirmed']
     death_cases = full_table['Deaths']
     recovered_cases = full_table['Recovered']
