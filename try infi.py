@@ -62,9 +62,9 @@ def worldMenu():
 
 def worldMap():
     #reading the csv file
-    confirmed_df = pd.read_csv("/home/baishaliroy/Desktop/heyacode/time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_recovered_global.csv")
+    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
+    deaths_df = pd.read_csv("time_series_covid19_deaths_global.csv")
+    recovered_df = pd.read_csv("time_series_covid19_recovered_global.csv")
 
     print(confirmed_df)
     print(deaths_df)
@@ -75,9 +75,9 @@ def worldMap():
 
 def pieChart():
     #reading csv file
-    confirmed_df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_recovered_global.csv")
+    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
+    deaths_df = pd.read_csv("time_series_covid19_deaths_global.csv")
+    recovered_df = pd.read_csv("time_series_covid19_recovered_global.csv")
 
     print(confirmed_df)
 
@@ -156,7 +156,7 @@ def pieChart():
 
 def lineChart():
     #reading the csv file
-    data = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_confirmed_global.csv")
+    data = pd.read_csv("time_series_covid19_confirmed_global.csv")
 
     #group the data by the country
     data = data.groupby('Country/Region').sum()
@@ -176,7 +176,7 @@ def lineChart():
 
 
 def scatterPlot():
-    df = pd.read_csv("/home/baishaliroy/Desktop/project/heyacode/time_series_covid19_confirmed_global.csv")
+    df = pd.read_csv("time_series_covid19_confirmed_global.csv")
 
     x = df['Country/Region']
     print(x)
