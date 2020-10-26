@@ -220,5 +220,3 @@ def countryMenu():
     
 
 main()
-
-    
