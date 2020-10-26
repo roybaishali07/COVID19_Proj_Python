@@ -26,7 +26,7 @@ if missing != []:
     print('''\n\nYou are missing some packages in your system that are required to run this program.
     Please execute these following commands in your terminal to resolve this issue.''')
     for i in missing:
-        print(f"/nMissing : {i}\nCommand : {requirement[i]}")
+        print(f"\nMissing : {i}\nCommand : {requirement[i]}")
     exit()
 def main():
     while (True):
