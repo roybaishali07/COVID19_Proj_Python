@@ -132,7 +132,7 @@ def pieChart():
     print("\n3.For recovered cases")
     print("\n#.To exit")
 
-    ch = input("\nEnter your choice")
+    ch = input("\nEnter your choice:")
     
     
     #pie chart of confirmed cases
@@ -217,6 +217,11 @@ def countryMenu():
 
     if ch == "#":
         exit()
+
+def pieChart():
+    covid = pd.read_csv('covid_19_india.csv')
+    print(covid)
     
+    covid.groupby(['Date'])['Confirmed','Deaths',''    
 
 main()
