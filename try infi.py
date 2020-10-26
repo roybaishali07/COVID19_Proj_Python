@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 #import coronavirus as cv
 import altair as alt
 #import baishali as goru
-#fuck uju with hardie
-
+#import vagina as hollie
+#import penis as hardie
+#while(True):
+#  fuck hollie with hardie
 
 def main():
     while (True):
