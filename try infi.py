@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 #import coronavirus as cv
 import altair as alt
 
+
 def main():
     while (True):
         print("\n\nWelcome to corona world!")
