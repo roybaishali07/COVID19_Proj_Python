@@ -1,11 +1,33 @@
-import pandas as pd
-import geopandas as geo
-import numpy as np#no problem😇
-import matplotlib.pyplot as plt
+requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
+missing = []
+try:
+    import pandas as pd
+except:
+    missing.append("pandas")
+try:
+    import geopandas as geo
+except:
+    missing.append("geopandas")
+try :
+    import numpy as np#no problem😇
+except:
+    missing.append("numpy")
+try:
+    import matplotlib.pyplot as plt
 #import coronavirus as cv
-import altair as alt
+except:
+    missing.append("matplotlib")
+try:
+    import altair as alt
+except:
+    missing.append("altair")
 #import baishali as goru
-
+if missing != []:
+    print('''\n\nYou are missing some packages in your system that are required to run this program.
+    Please execute these following commands in your terminal to resolve this issue.''')
+    for i in missing:
+        print(f"/nMissing : {i}\nCommand : {requirement[i]}")
+    exit()
 def main():
     while (True):
         print("\n\nWelcome to corona world!")
