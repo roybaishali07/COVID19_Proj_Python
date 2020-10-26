@@ -28,14 +28,16 @@ if missing != []:
     for i in missing:
         print(f"\nMissing : {i}\nCommand : {requirement[i]}")
     exit()
+
+
 def main():
     while (True):
         print("\n\nWelcome to corona world!")
-        print("\n1.To explore to world wide data")
-        print("\n2.To explore nation wise data")
-        print("\n#.To quit")
+        print("1.To explore to world wide data")
+        print("2.To explore nation wise data")
+        print("n#.To quit")
 
-        choice = input("\nEnter your choice:")
+        choice = input("\nEnter your choice : ")
 
         if choice=='1':
             worldMenu()
@@ -49,33 +51,37 @@ def main():
             exit()
 
         else:
-            print("Try again!")
+            print("Wrong input, Try again!")
             continue
 
 
 def worldMenu():
     while(True):
 
-        print("\n1.For world map")
-        print("\n2.For pie chart")
-        print("\n3.For line chart")
-        print("\n4.For scatter plot")
-        print("\n0.Return to previous menu")
-        print("\n#.To exit")
+        print("\n\n1.For world map")
+        print("2.For pie chart")
+        print("3.For line chart")
+        print("4.For scatter plot")
+        print("0.Return to previous menu")
+        print("#.To exit")
 
-        ch = input("\nEnter your choice:")
+        ch = input("\nEnter your choice : ")
 
         if ch == '1':
             worldMap()
+            continue
 
         if ch == '2':
             pieChart()
+            continue
 
         if ch == '3':
             lineChart()
+            continue
 
         if ch == '4':
             scatterPlot()
+            continue
         
         if ch == '0':
             break
@@ -83,24 +89,60 @@ def worldMenu():
         if ch == "#":
             exit()
 
+        else:
+            print("Wrong input, Try again!")
+            continue
+
+
+def countryMenu():
+    while(True):               
+        print("2.For pie chart")
+        print("3.For line chart")
+        print("4.For scatter plot")
+        print("0.Return to previous menu")
+        print("#.To exit")
+
+        ch =  input("\nEnter your choice:")
+
+        if ch == '1':
+            worldMap()
+            continue
+        if ch == '2':
+            pieChart()  
+            continue
+
+        if ch == '3':
+            lineChart()
+            continue
+
+        if ch == '4':
+            scatterPlot()
+            continue
+
+        if ch == "#":
+            exit()
+
+        else:
+            print("Wrong input, Try again!")
+            continue
+
+
 def worldMap():
     #reading the csv file
-    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("time_series_covid19_recovered_global.csv")
+    confirmed_df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+    deaths_df = pd.read_csv("assets/time_series_covid19_deaths_global.csv")
+    recovered_df = pd.read_csv("assets/time_series_covid19_recovered_global.csv")
 
     print(confirmed_df)
     print(deaths_df)
     print(recovered_df)
 
 
-
-
 def pieChart():
     #reading csv file
-    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("time_series_covid19_recovered_global.csv")
+    confirmed_df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+    deaths_df = pd.read_csv("assets/time_series_covid19_deaths_global.csv")
+    recovered_df = pd.read_csv("assets/time_series_covid19_recovered_global.csv")
 
     print(confirmed_df)
 
@@ -174,10 +216,9 @@ def pieChart():
     plt.show()
 
 
-
 def lineChart():
     #reading the csv file
-    data = pd.read_csv("time_series_covid19_confirmed_global.csv")
+    data = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
 
     #group the data by the country
     data = data.groupby('Country/Region').sum()
@@ -197,7 +238,7 @@ def lineChart():
 
 
 def scatterPlot():
-    df = pd.read_csv("time_series_covid19_confirmed_global.csv")
+    df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
 
     x = df['Country/Region']
     print(x)
@@ -213,34 +254,10 @@ def scatterPlot():
     
     plt.show()
 
-def countryMenu():
-
-    print("\n1.For world map")
-    print("\n2.For pie chart")
-    print("\n3.For line chart")
-    print("\n4.For scatter plot")
-    print("\n0.Return to previous menu")
-    print("\n#.To exit")
-
-    ch =  int(input("\nEnter your choice:"))
-
-    if ch == '1':
-        worldMap()
-
-    if ch == '2':
-        pieChart()
-
-    if ch == '3':
-        lineChart()
-
-    if ch == '4':
-        scatterPlot()
-
-    if ch == "#":
-        exit()
 
 def pieChart():
     covid = pd.read_csv('covid_19_india.csv')
     print(covid)   
+
 
 main()
