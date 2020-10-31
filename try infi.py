@@ -6,6 +6,36 @@ import matplotlib.pyplot as plt
 import altair as alt
 
 
+requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
+missing = []
+try:
+    import pandas as pd
+except:
+    missing.append("pandas")
+try:
+    import geopandas as geo
+except:
+    missing.append("geopandas")
+try :
+    import numpy as np#no problem😇
+except:
+    missing.append("numpy")
+try:
+    import matplotlib.pyplot as plt
+
+except:
+    missing.append("matplotlib")
+try:
+    import altair as alt
+except:
+    missing.append("altair")
+
+if missing != []:
+    print(f'''\n\nYou are missing {len(missing)} package(s) in your system that are required to run this program.
+    Please execute this following command(s) in your terminal to resolve this issue.''')
+    for i in missing:
+        print(f"\nMissing : {i}\nCommand : {requirement[i]}")
+    exit()
 def main():
     while (True):
         print("\n\nWelcome to corona world!")
@@ -75,81 +105,45 @@ def worldMap():
 
 
 def pieChart():
-    #reading csv file
-    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("time_series_covid19_recovered_global.csv")
-
-    print(confirmed_df)
-
-    dates = confirmed_df.columns[4:]
-
-    confirmed_df_long = confirmed_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Confirmed'
-    )
+    data = pd.read_csv('case_time_series.csv') 
     
-    deaths_df_long = deaths_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Deaths'
-    )
-    
-    recovered_df_long = recovered_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Recovered'
-    )
-    
-    # Merging confirmed_df_long and deaths_df_long
-    
-    full_table = confirmed_df_long.merge(
-    right=deaths_df_long, 
-    how='left',
-    on=['Province/State', 'Country/Region', 'Date', 'Lat', 'Long']
-    )
-    # Merging full_table and recovered_df_long
-    
-    full_table = full_table.merge(
-    right=recovered_df_long, 
-    how='left',
-    on=['Province/State', 'Country/Region', 'Date', 'Lat', 'Long']
-    )
+    Y = data.iloc[61:,1].values  
+    R = data.iloc[61:,3].values  
+    D = data.iloc[61:,5].values  
+    X = data.iloc[61:,0]  
 
-    confirmed_cases = full_table['Confirmed']
-    death_cases = full_table['Deaths']
-    recovered_cases = full_table['Recovered']
+    plt.figure(figsize=(25,8)) 
 
-    country = full_table['Country/Region']
+    ax = plt.axes() 
+    ax.grid(linewidth=0.4, color='#8f8f8f')  
 
-    print("\n1.For confirmed cases")
-    print("\n2.For deaths cases")
-    print("\n3.For recovered cases")
-    print("\n#.To exit")
+    ax.set_facecolor("black")  
+    ax.set_xlabel('\nDate',size=25,color='#4bb4f2') 
+    ax.set_ylabel('Number of Confirmed Cases\n',size=25,color='#4bb4f2') 
 
-    ch = input("\nEnter your choice:")
-    
-    
-    #pie chart of confirmed cases
-    if ch == 1:
-        plt.pie(confirmed_cases,labels= country, shadow = True, startangle = 140)
-        plt.title('confirmed cases')
+    plt.xticks(rotation='vertical',size='20',color='white') 
+    plt.yticks(size=20,color='white') 
+    plt.tick_params(size=20,color='white') 
 
-    #pie chart of deaths
-    if ch == 2:
-        plt.pie(death_cases,labels= country, shadow = True, startangle = 140)
-        plt.title('death_cases')
+    for i,j in zip(X,Y): 
+        ax.annotate(str(j),xy=(i,j+100),color='white',size='13') 
 
-    #pie chart of recovered cases
-    if ch == 3:
-        plt.pie(recovered_cases,labels = country, shadow = True, startangle = 140 )
-        plt.title('recovered_cases')
-    
-    plt.show()
+    ax.annotate('Second Lockdown 15th April', 
+                xy=(15.2, 860), 
+                xytext=(19.9,500), 
+                color='white', 
+                size='25', 
+                arrowprops=dict(color='white', 
+                                linewidth=0.025)) 
+
+    plt.title("COVID-19 IN : Daily Confrimed\n", size=50,color='#28a9ff') 
+
+    ax.plot(X,Y, 
+            color='#1F77B4', 
+            marker='o', 
+            linewidth=4, 
+            markersize=15, 
+            markeredgecolor='#035E9B')
 
 
 
@@ -190,7 +184,7 @@ def scatterPlot():
     plt.scatter(x,y, c = 'r',marker= '*')
     
     plt.show()
-
+'''
 def countryMenu():
 
     print("\n1.For world map")
@@ -203,25 +197,33 @@ def countryMenu():
     ch =  int(input("\nEnter your choice:"))
 
     if ch == '1':
-        worldMap()
+        world()
 
     if ch == '2':
-        pieChart()
+        pie()
 
     if ch == '3':
-        lineChart()
+        line()
 
     if ch == '4':
-        scatterPlot()
+        scatter()
+
+    if ch == '0':
+        break
 
     if ch == "#":
         exit()
 
-def pieChart():
-    covid = pd.read_csv('covid_19_india.csv')
-    covid.groupby(['Date'])['Confirmed','Cured','Deaths','State/UnionTerritory'].max()
+def world():
+    print("world")
 
-    plt.figure(figsize = (20,10))
-    covid['State/UnionTerritory'].value_count().plot.pie(autocpt = "%1.1f%%")
+def pie():
+    print("pie")
 
+def line():
+    print("line")
+
+def scatter():
+    print("scatter")
+'''
 main()
