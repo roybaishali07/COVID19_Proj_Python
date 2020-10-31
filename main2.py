@@ -184,26 +184,11 @@ def pieChart():
             linewidth=4, 
             markersize=15, 
             markeredgecolor='#035E9B')
+    plt.show()
 
 
 def lineChart():
-    #reading the csv file
-    data = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
-
-    #group the data by the country
-    data = data.groupby('Country/Region').sum()
-
-
-    #drop lat and and long columns
-    data = data.drop(columns = ['Lat','Long'])
-
-    #create a transpose of the dataframe
-    data_transposed = data.T
-
-    #plotting 
-    data_transposed.plot( y =['US','India','Brazil','Spain','Argentina','Colombia','Peru','Mexico','France','South Africa','Iran','Chile','Iraq','Bangladesh','Italy'],use_index = True, figsize = (10,10),marker = '*',markersize = 0.7)
-
-    plt.show()
+    
 
 
 

@@ -139,124 +139,84 @@ def worldMap():
 
 
 def pieChart():
-    #reading csv file
-    confirmed_df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("assets/time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("assets/time_series_covid19_recovered_global.csv")
+    slices = [62, 142, 195]
+    activities = ['Travel', 'Place Visit', 'Unknown']
 
-    print(confirmed_df)
-
-    dates = confirmed_df.columns[4:]
-
-    confirmed_df_long = confirmed_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Confirmed'
-    )
+    cols=['#4C8BE2','#00e061','#fe073a']
+    exp = [0.2,0.02,0.02]
     
-    deaths_df_long = deaths_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Deaths'
-    )
+    plt.pie(slices,
+            labels=activities, 
+            textprops=dict(size=10,color='black'),
+            radius=1,
+            colors=cols,
+            autopct='%2.2f%%',
+            explode=exp,
+            shadow=True,
+            startangle=90)
     
-    recovered_df_long = recovered_df.melt(
-        id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'], 
-        value_vars=dates, 
-        var_name='Date', 
-        value_name='Recovered'
-    )
-    
-    # Merging confirmed_df_long and deaths_df_long
-    
-    full_table = confirmed_df_long.merge(
-    right=deaths_df_long, 
-    how='left',
-    on=['Province/State', 'Country/Region', 'Date', 'Lat', 'Long']
-    )
-    # Merging full_table and recovered_df_long
-    
-    full_table = full_table.merge(
-    right=recovered_df_long, 
-    how='left',
-    on=['Province/State', 'Country/Region', 'Date', 'Lat', 'Long']
-    )
-
-    confirmed_cases = full_table['Confirmed']
-    death_cases = full_table['Deaths']
-    recovered_cases = full_table['Recovered']
-
-    country = full_table['Country/Region']
-
-    print("\n1.For confirmed cases")
-    print("\n2.For deaths cases")
-    print("\n3.For recovered cases")
-    print("\n#.To exit")
-
-    ch = input("\nEnter your choice:")
-    
-    
-    #pie chart of confirmed cases
-    if ch == 1:
-        plt.pie(confirmed_cases,labels= country, shadow = True, startangle = 140)
-        plt.title('confirmed cases')
-
-    #pie chart of deaths
-    if ch == 2:
-        plt.pie(death_cases,labels= country, shadow = True, startangle = 140)
-        plt.title('death_cases')
-
-    #pie chart of recovered cases
-    if ch == 3:
-        plt.pie(recovered_cases,labels = country, shadow = True, startangle = 140 )
-        plt.title('recovered_cases')
-    
+    plt.title('Transmission\n\n\n\n',color='#4fb4f2',size=40)
     plt.show()
-
 
 def lineChart():
-    #reading the csv file
-    data = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+    data = pd.read_csv('case_time_series.csv') 
 
-    #group the data by the country
-    data = data.groupby('Country/Region').sum()
+    Y = data.iloc[61:,1].values  
+    R = data.iloc[61:,3].values  
+    D = data.iloc[61:,5].values   
+    X = data.iloc[61:,0]  
 
+    plt.figure(figsize=(25,8)) 
 
-    #drop lat and and long columns
-    data = data.drop(columns = ['Lat','Long'])
+    ax = plt.axes() 
+    ax.grid(linewidth=0.4, color='#8f8f8f')  
 
-    #create a transpose of the dataframe
-    data_transposed = data.T
+    ax.set_facecolor("black")  
+    ax.set_xlabel('\nDate',size=25,color='#4bb4f2') 
+    ax.set_ylabel('Number of Confirmed Cases\n', 
+                size=25,color='#4bb4f2') 
 
-    #plotting 
-    data_transposed.plot( y =['US','India','Brazil','Spain','Argentina','Colombia','Peru','Mexico','France','South Africa','Iran','Chile','Iraq','Bangladesh','Italy'],use_index = True, figsize = (10,10),marker = '*',markersize = 0.7)
+    plt.xticks(rotation='vertical',size='20',color='white') 
+    plt.yticks(size=20,color='white') 
+    plt.tick_params(size=20,color='white') 
 
+    for i,j in zip(X,Y): 
+        ax.annotate(str(j),xy=(i,j+100),color='white',size='13') 
+
+        ax.annotate('Second Lockdown 15th April', 
+            xy=(15.2, 860), 
+            xytext=(19.9,500), 
+            color='white', 
+            size='15', 
+            arrowprops=dict(color='white', 
+                            linewidth=0.025)) 
+
+    plt.title("COVID-19 IN : Daily Confrimed\n", 
+            size=50,color='#28a9ff') 
+
+    ax.plot(X,Y, 
+        color='#1F77B4', 
+        marker='o', 
+        linewidth=4, 
+        markersize=15, 
+        markeredgecolor='#035E9B')
+    
     plt.show()
-
 
 def scatterPlot():
     df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
 
-    x = df['Country/Region']
-    print(x)
+    #we r just taking top 5 countries of this csv file of date 10/3/20
 
-    y = df['10/3/20']
-    print(x)
+    x = df['Country/Region'].head()
 
-    
+    y = df['10/3/20'].head()
+
     plt.xlabel('Country/Region')
     plt.ylabel('10/3/20')
 
     plt.scatter(x,y, c = 'r',marker= '*')
     
     plt.show()
-
-
-def pieChart():
-    covid = pd.read_csv('covid_19_india.csv')
-    print(covid)   
-
 
 main()
