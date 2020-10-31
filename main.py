@@ -24,7 +24,7 @@ except:
 #import baishali as goru
 if missing != []:
     print(f'''\n\nYou are missing {len(missing)} package(s) in your system that are required to run this program.
-    Please execute this following command(s) in your terminal to resolve this issue.''')
+Please execute this following command(s) in your terminal to resolve this issue.''')
     for i in missing:
         print(f"\nMissing : {i}\nCommand : {requirement[i]}")
     exit()
