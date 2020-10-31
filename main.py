@@ -1,3 +1,7 @@
+import pandas as pd 
+import numpy as np
+import matplotlib.pyplot as plt
+
 requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
 missing = []
 try:
@@ -204,19 +208,57 @@ def lineChart():
     plt.show()
 
 def scatterPlot():
-    df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
-
-    #we r just taking top 5 countries of this csv file of date 10/3/20
-
-    x = df['Country/Region'].head()
-
-    y = df['10/3/20'].head()
-
-    plt.xlabel('Country/Region')
-    plt.ylabel('10/3/20')
-
-    plt.scatter(x,y, c = 'r',marker= '*')
+    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
     
-    plt.show()
+    opts = detectImportOptions(filenames(4), "TextType","string");
+    opts.VariableNamesLine = 1;
+    opts.DataLines = [2,inf];
+    opts.PreserveVariableNames = true;
+    times_conf = readtable(filenames(4),opts);
+
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "China") = "Mainland China";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Czechia") = "Czech Republic";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Iran (Islamic Republic of)") = "Iran";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Republic of Korea") = "Korea, South";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Republic of Moldova") = "Moldova";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Russian Federation") = "Russia";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Taipei and environs") = "Taiwan";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Taiwan*") = "Taiwan";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "United Kingdom") = "UK";
+    times_conf.("Country/Region")(times_conf.("Country/Region") == "Viet Nam") = "Vietnam";
+    times_conf.("Country/Region")(times_conf.("Province/State") == "St Martin") = "St Martin";
+    times_conf.("Country/Region")(times_conf.("Province/State") == "Saint Barthelemy") = "Saint Barthelemy";
+
+    vars = times_conf.Properties.VariableNames;
+    times_conf_country = groupsummary(times_conf,"Country/Region",{'sum','mean'},vars(3:end));
+
+    vars = times_conf_country.Properties.VariableNames;
+    vars = regexprep(vars,"^(sum_)(?=L(a|o))","remove_");
+    vars = regexprep(vars,"^(mean_)(?=[0-9])","remove_");
+    vars = erase(vars,{'sum_','mean_'});
+    times_conf_country.Properties.VariableNames = vars;
+    times_conf_country = removevars(times_conf_country,[{'GroupCount'},vars(contains(vars,"remove_"))]);
+
+    times_conf_exChina = times_conf_country(times_conf_country.("Country/Region") ~= "Mainland China",:);
+    vars = times_conf_exChina.Properties.VariableNames;
+
+    figure
+    t = tiledlayout("flow");
+    for ii = [4, length(vars)]
+    times_conf_exChina.Category = categorical(repmat("<100",height(times_conf_exChina),1));
+    times_conf_exChina.Category(table2array(times_conf_exChina(:,ii)) >= 100) = ">=100";
+    nexttile
+    tbl = times_conf_exChina(:,[1:3, ii, end]);
+    tbl(tbl.(4) == 0,:) = [];
+    gb = geobubble(tbl,"Lat","Long","SizeVariable",vars(ii),"ColorVariable","Category");
+    gb.BubbleColorList = [1,0,1;1,0,0];
+    gb.LegendVisible = "off";
+    gb.Title = "As of " + vars(ii);
+    gb.SizeLimits = [0, max(times_conf_exChina.(vars{length(vars)}))];
+    gb.MapCenter = [21.6385   36.1666];
+    gb.ZoomLevel = 0.3606;
+    end
+    title(t,["COVID-19 Confirmed Cases outside Mainland China"; ...
+        "Country/Region with 100+ cases highlighted in red"])
 
 main()
