@@ -256,19 +256,10 @@ def choroplethPlot():
         text = new_df['Total_Cases'],
         colorscale = colors,
         autocolorscale=False,
-        reversescale=False,cols=['#4C8BE2','#00e061','#fe073a']
-        exp = [0.2,0.02,0.02]
-    
-    plt.pie(slices,
-            labels=activities, 
-            textprops=dict(size=10,color='black'),
-            radius=1,
-            colors=cols,
-            autopct='%2.2f%%',
-            explode=exp,
-
+        reversescale=False,
         colorbar_title = 'Reported Covid-19 Cases',
     ))
+        
 
     fig.update_layout(
         title_text='Reported Covid-19 Cases',
