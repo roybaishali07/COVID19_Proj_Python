@@ -1,32 +1,43 @@
-import pandas as pd 
-import numpy as np
-import matplotlib.pyplot as plt
-import folium  
-import plotly.graph_objects as go  
 
-requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
+requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair", "folium": "python -m pip install folium", "plotly": "python -m pip install plotly"}
 missing = []
+
 try:
     import pandas as pd
 except:
     missing.append("pandas")
+
 try:
     import geopandas as geo
 except:
     missing.append("geopandas")
+
 try :
     import numpy as np#no problem😇
 except:
     missing.append("numpy")
+
 try:
     import matplotlib.pyplot as plt
 #import coronavirus as cv
 except:
     missing.append("matplotlib")
+
 try:
     import altair as alt
 except:
     missing.append("altair")
+
+try:
+    import folium
+except:
+    missing.append("folium")
+
+try:
+    import plotly.graph_objects as go
+except:
+    missing.append("plotly")
+
 #import baishali as goru
 if missing != []:
     print(f'''\n\nYou are missing {len(missing)} package(s) in your system that are required to run this program.
@@ -302,8 +313,5 @@ def countryMenu():
         else:
             print("Wrong input, Try again!")
             continue
-
-
-
 
 main()
