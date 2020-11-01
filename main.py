@@ -104,41 +104,6 @@ def worldMenu():
             print("Wrong input, Try again!")
             continue
 
-
-def countryMenu():
-    while(True):               
-        print("2.For pie chart")
-        print("3.For line chart")
-        print("4.For scatter plot")
-        print("0.Return to previous menu")
-        print("#.To exit")
-
-        ch =  input("\nEnter your choice:")
-
-        if ch == '1':
-            worldMap()
-            continue
-        
-        if ch == '2':
-            pieChart()  
-            continue
-
-        if ch == '3':
-            lineChart()
-            continue
-
-        if ch == '4':
-            choroplethPlot()
-            continue
-
-        if ch == "#":
-            exit()
-
-        else:
-            print("Wrong input, Try again!")
-            continue
-
-
 def worldMap():
     df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
     df.head()
@@ -302,5 +267,43 @@ def choroplethPlot():
     )
 
     fig.write_html('first_figure.html', auto_open=True)
+
+
+
+def countryMenu():
+    while(True):               
+        print("2.For pie chart")
+        print("3.For line chart")
+        print("4.For scatter plot")
+        print("0.Return to previous menu")
+        print("#.To exit")
+
+        ch =  input("\nEnter your choice:")
+
+        if ch == '1':
+            worldMap()
+            continue
+        
+        if ch == '2':
+            pieChart()  
+            continue
+
+        if ch == '3':
+            lineChart()
+            continue
+
+        if ch == '4':
+            choroplethPlot()
+            continue
+
+        if ch == "#":
+            exit()
+
+        else:
+            print("Wrong input, Try again!")
+            continue
+
+
+
 
 main()
