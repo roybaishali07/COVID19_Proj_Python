@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt
+import folium  
 
 requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
 missing = []
@@ -66,6 +67,7 @@ def worldMenu():
         print("2.For pie chart")
         print("3.For line chart")
         print("4.For scatter plot")
+        print("5.For bubble chart")
         print("0.Return to previous menu")
         print("#.To exit")
 
@@ -85,6 +87,9 @@ def worldMenu():
 
         if ch == '4':
             scatterPlot()
+            continue
+        if ch == '5':
+            bubbleChart()
             continue
         
         if ch == '0':
@@ -208,57 +213,37 @@ def lineChart():
     plt.show()
 
 def scatterPlot():
-    confirmed_df = pd.read_csv("time_series_covid19_confirmed_global.csv")
-    
-    opts = detectImportOptions(filenames(4), "TextType","string");
-    opts.VariableNamesLine = 1;
-    opts.DataLines = [2,inf];
-    opts.PreserveVariableNames = true;
-    times_conf = readtable(filenames(4),opts);
+    data=pd.read_csv("case_time_series.csv")
+    from pandas.plotting import scatter_matrix
+    df = pd.DataFrame(data)
+    scatter_matrix(df)
+    plt.show()
 
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "China") = "Mainland China";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Czechia") = "Czech Republic";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Iran (Islamic Republic of)") = "Iran";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Republic of Korea") = "Korea, South";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Republic of Moldova") = "Moldova";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Russian Federation") = "Russia";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Taipei and environs") = "Taiwan";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Taiwan*") = "Taiwan";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "United Kingdom") = "UK";
-    times_conf.("Country/Region")(times_conf.("Country/Region") == "Viet Nam") = "Vietnam";
-    times_conf.("Country/Region")(times_conf.("Province/State") == "St Martin") = "St Martin";
-    times_conf.("Country/Region")(times_conf.("Province/State") == "Saint Barthelemy") = "Saint Barthelemy";
+def bubbleChart():
+    df_conf = pd.read_csv("/home/baishaliroy/Desktop/project/COVID19_Proj_Python/assets/time_series_covid19_confirmed_global.csv")
+    cols_to_select = list(df_conf.columns[0:4]) + list(df_conf.columns[-6:])
+    df_conf.loc[(df_conf['Country/Region'] == "Netherlands"), cols_to_select]
 
-    vars = times_conf.Properties.VariableNames;
-    times_conf_country = groupsummary(times_conf,"Country/Region",{'sum','mean'},vars(3:end));
+    cols_to_keep = list(df_conf.columns[0:4]) + list(df_conf.columns[-1:])
+    df_conf_last = df_conf[cols_to_keep]
+    df_conf_last.columns.values[-1] = "Confirmed"
 
-    vars = times_conf_country.Properties.VariableNames;
-    vars = regexprep(vars,"^(sum_)(?=L(a|o))","remove_");
-    vars = regexprep(vars,"^(mean_)(?=[0-9])","remove_");
-    vars = erase(vars,{'sum_','mean_'});
-    times_conf_country.Properties.VariableNames = vars;
-    times_conf_country = removevars(times_conf_country,[{'GroupCount'},vars(contains(vars,"remove_"))]);
+    df_conf_last.head()
 
-    times_conf_exChina = times_conf_country(times_conf_country.("Country/Region") ~= "Mainland China",:);
-    vars = times_conf_exChina.Properties.VariableNames;
+    df_conf_last['Confirmed'] = df_conf_last['Confirmed']
 
-    figure
-    t = tiledlayout("flow");
-    for ii = [4, length(vars)]
-    times_conf_exChina.Category = categorical(repmat("<100",height(times_conf_exChina),1));
-    times_conf_exChina.Category(table2array(times_conf_exChina(:,ii)) >= 100) = ">=100";
-    nexttile
-    tbl = times_conf_exChina(:,[1:3, ii, end]);
-    tbl(tbl.(4) == 0,:) = [];
-    gb = geobubble(tbl,"Lat","Long","SizeVariable",vars(ii),"ColorVariable","Category");
-    gb.BubbleColorList = [1,0,1;1,0,0];
-    gb.LegendVisible = "off";
-    gb.Title = "As of " + vars(ii);
-    gb.SizeLimits = [0, max(times_conf_exChina.(vars{length(vars)}))];
-    gb.MapCenter = [21.6385   36.1666];
-    gb.ZoomLevel = 0.3606;
-    end
-    title(t,["COVID-19 Confirmed Cases outside Mainland China"; ...
-        "Country/Region with 100+ cases highlighted in red"])
+    map1 = folium.Map(location=[30.6, 114], zoom_start=3) #US=[39,-98] Europe =[45, 5]
 
+    for i in range(0,len(df_conf_last)):
+        folium.Circle(
+        location=[df_conf_last.iloc[i]['Lat'], df_conf_last.iloc[i]['Long']],
+        tooltip = "Country: "+df_conf_last.iloc[i]['Country/Region']+"<br>Province/State: "+str(df_conf_last.iloc[i]['Province/State'])+"<br>Confirmed cases: "+str(df_conf_last.iloc[i]['Confirmed'].astype(int)),
+        radius=df_conf_last.iloc[i]['Confirmed']*5,
+        color='crimson',
+        fill=True,
+        fill_color='crimson'
+        ).add_to(map1)
+
+    map1
+    plt.show()
 main()
