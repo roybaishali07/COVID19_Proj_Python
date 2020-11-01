@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import folium  
+import plotly.graph_objects as go  
 
 requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair"}
 missing = []
@@ -67,7 +68,7 @@ def worldMenu():
         print("2.For pie chart")
         print("3.For line chart")
         print("4.For scatter plot")
-        print("5.For bubble chart")
+        print("5.For choropleth chart")
         print("0.Return to previous menu")
         print("#.To exit")
 
@@ -88,8 +89,9 @@ def worldMenu():
         if ch == '4':
             scatterPlot()
             continue
+        
         if ch == '5':
-            bubbleChart()
+            choroplethPlot()
             continue
         
         if ch == '0':
@@ -116,6 +118,7 @@ def countryMenu():
         if ch == '1':
             worldMap()
             continue
+        
         if ch == '2':
             pieChart()  
             continue
@@ -125,7 +128,7 @@ def countryMenu():
             continue
 
         if ch == '4':
-            scatterPlot()
+            choroplethPlot()
             continue
 
         if ch == "#":
@@ -137,14 +140,43 @@ def countryMenu():
 
 
 def worldMap():
-    #reading the csv file
-    confirmed_df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
-    deaths_df = pd.read_csv("assets/time_series_covid19_deaths_global.csv")
-    recovered_df = pd.read_csv("assets/time_series_covid19_recovered_global.csv")
+    df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+    df.head()
+    df = df.rename(columns= {"Country/Region" : "Country", "Province/State": "Province"})
+    df.head()
 
-    print(confirmed_df)
-    print(deaths_df)
-    print(recovered_df)
+    df['text'] = df['Country'] + " " + df["10/11/20"].astype(str)
+    fig = go.Figure(data = go.Scattergeo(
+        lon = df["Long"],
+        lat = df["Lat"],
+        text = df["text"],
+        mode = "markers",
+        marker = dict(
+            size = 12,
+            opacity = 0.8,
+            reversescale = True,
+            autocolorscale = True,
+            symbol = 'square',
+            line = dict(
+                width = 1,
+                color = 'rgba(102, 102, 102)'
+            ),
+            cmin = 0,
+            color = df['10/11/20'],
+            cmax = df['10/11/20'].max(),
+            colorbar_title = "COVID 19 Reported Cases"
+        )
+    ))
+
+    fig.update_layout(
+        title = "COVID19 Confirmed Cases Around the World",
+        geo = dict(
+            scope = "world",
+            showland = True,
+        )
+    )
+
+    fig.write_html('first_figure.html', auto_open=True)
 
 
 def pieChart():
@@ -176,6 +208,7 @@ def lineChart():
     X = data.iloc[61:,0]  
 
     plt.figure(figsize=(25,8)) 
+    plt.style.use('dark_background')
 
     ax = plt.axes() 
     ax.grid(linewidth=0.4, color='#8f8f8f')  
@@ -215,35 +248,59 @@ def lineChart():
 def scatterPlot():
     data=pd.read_csv("case_time_series.csv")
     from pandas.plotting import scatter_matrix
+    plt.style.use('dark_background')
     df = pd.DataFrame(data)
     scatter_matrix(df)
     plt.show()
 
-def bubbleChart():
-    df_conf = pd.read_csv("/home/baishaliroy/Desktop/project/COVID19_Proj_Python/assets/time_series_covid19_confirmed_global.csv")
-    cols_to_select = list(df_conf.columns[0:4]) + list(df_conf.columns[-6:])
-    df_conf.loc[(df_conf['Country/Region'] == "Netherlands"), cols_to_select]
+def choroplethPlot():
 
-    cols_to_keep = list(df_conf.columns[0:4]) + list(df_conf.columns[-1:])
-    df_conf_last = df_conf[cols_to_keep]
-    df_conf_last.columns.values[-1] = "Confirmed"
+    df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+    df = df.rename(columns= {"Country/Region" : "Country", "Province/State": "Province"})
 
-    df_conf_last.head()
+    total_list = df.groupby('Country')['4/13/20'].sum().tolist()
 
-    df_conf_last['Confirmed'] = df_conf_last['Confirmed']
+    country_list = df["Country"].tolist()
+    country_set = set(country_list)
+    country_list = list(country_set)
+    country_list.sort()
 
-    map1 = folium.Map(location=[30.6, 114], zoom_start=3) #US=[39,-98] Europe =[45, 5]
+    new_df = pd.DataFrame(list(zip(country_list, total_list)), 
+                    columns =['Country', 'Total_Cases'])
 
-    for i in range(0,len(df_conf_last)):
-        folium.Circle(
-        location=[df_conf_last.iloc[i]['Lat'], df_conf_last.iloc[i]['Long']],
-        tooltip = "Country: "+df_conf_last.iloc[i]['Country/Region']+"<br>Province/State: "+str(df_conf_last.iloc[i]['Province/State'])+"<br>Confirmed cases: "+str(df_conf_last.iloc[i]['Confirmed'].astype(int)),
-        radius=df_conf_last.iloc[i]['Confirmed']*5,
-        color='crimson',
-        fill=True,
-        fill_color='crimson'
-        ).add_to(map1)
+    colors = ["#F9F9F5", "#FAFAE6", "#FCFCCB", "#FCFCAE",  "#FCF1AE", "#FCEA7D", "#FCD97D",
+            "#FCCE7D", "#FCC07D", "#FEB562", "#F9A648",  "#F98E48", "#FD8739", "#FE7519",
+            "#FE5E19", "#FA520A", "#FA2B0A", "#9B1803",  "#861604", "#651104", "#570303",]
 
-    map1
-    plt.show()
+
+    fig = go.Figure(data=go.Choropleth(
+        locationmode = "country names",
+        locations = new_df['Country'],
+        z = new_df['Total_Cases'],
+        text = new_df['Total_Cases'],
+        colorscale = colors,
+        autocolorscale=False,
+        reversescale=False,cols=['#4C8BE2','#00e061','#fe073a']
+        exp = [0.2,0.02,0.02]
+    
+    plt.pie(slices,
+            labels=activities, 
+            textprops=dict(size=10,color='black'),
+            radius=1,
+            colors=cols,
+            autopct='%2.2f%%',
+            explode=exp,
+
+        colorbar_title = 'Reported Covid-19 Cases',
+    ))
+
+    fig.update_layout(
+        title_text='Reported Covid-19 Cases',
+        geo=dict(
+            showcoastlines=True,
+        ),
+    )
+
+    fig.write_html('first_figure.html', auto_open=True)
+
 main()
