@@ -250,16 +250,18 @@ def choroplethPlot():
             "#FE5E19", "#FA520A", "#FA2B0A", "#9B1803",  "#861604", "#651104", "#570303",]
 
 
-    fig = go.Figure(data=go.Choropleth(
-        locationmode = "country names",
-        locations = new_df['Country'],
-        z = new_df['Total_Cases'],
-        text = new_df['Total_Cases'],
-        colorscale = colors,
-        autocolorscale=False,
-        reversescale=False,
-        colorbar_title = 'Reported Covid-19 Cases',
-    ))
+    fig = go.Figure(
+        data=go.Choropleth(
+            locationmode = "country names",
+            locations = new_df['Country'],
+            z = new_df['Total_Cases'],
+            text = new_df['Total_Cases'],
+            colorscale = colors,
+            autocolorscale=False,
+            reversescale=False,
+            colorbar_title = 'Reported Covid-19 Cases',
+        )
+    )
         
 
     fig.update_layout(
