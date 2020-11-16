@@ -1,4 +1,5 @@
 
+from matplotlib.ticker import MaxNLocator
 requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair", "folium": "python -m pip install folium", "plotly": "python -m pip install plotly"}
 missing = []
 
@@ -270,20 +271,20 @@ def choroplethPlot():
 
     fig.write_html('first_figure.html', auto_open=True)
 
-
+'''
 
 def countryMenu():
     while(True):               
-        print("2.For pie chart")
-        print("3.For line chart")
-        print("4.For scatter plot")
-        print("0.Return to previous menu")
+        print("1..For bar chart")
+        print("2..For pie chart")
+        print("3..For scatter plot")
+        print("4..Return to previous menu")
         print("#.To exit")
 
         ch =  input("\nEnter your choice:")
 
         if ch == '1':
-            worldMap()
+            barGraph()
             continue
         
         if ch == '2':
@@ -305,4 +306,58 @@ def countryMenu():
             print("Wrong input, Try again!")
             continue
 
+def lineChart():
+    data = pd.read_csv('assets/covid_19_india.csv') 
+
+    Y = data.iloc[61:,1].values 
+    R = data.iloc[61:,3].values 
+    D = data.iloc[61:,5].values 
+    X = data.iloc[61:,0] 
+
+    plt.figure(figsize=(25,8)) 
+
+    ax = plt.axes() 
+    ax.grid(linewidth=0.4, color='#8f8f8f') 
+
+    ax.set_facecolor("black") 
+    ax.set_xlabel('\nDate',size=25,color='#4bb4f2')   
+    ax.set_ylabel('Number of Confirmed Cases\n', 
+			size=25,color='#4bb4f2') 
+
+    plt.xticks(rotation='vertical',size='20',color='white') 
+    plt.yticks(size=20,color='white') 
+    plt.tick_params(size=20,color='white') 
+
+    for i,j in zip(X,Y): 
+	    ax.annotate(str(j),xy=(i,j+100),color='white',size='13') 
+	
+    ax.annotate('Second Lockdown 15th April', 
+			xy=(15.2, 860), 
+			xytext=(19.9,500), 
+			color='white', 
+			size='25', 
+			arrowprops=dict(color='white', 
+							linewidth=0.025)) 
+
+    plt.title("COVID-19 IN : Daily Confrimed\n", 
+		size=50,color='#28a9ff') 
+
+    ax.plot(X,Y, 
+		color='#1F77B4', 
+		marker='o', 
+		linewidth=4, 
+		markersize=15, 
+		markeredgecolor='#035E9B')
+
+def pieChart():
+    df = pd.read_csv('assets/covid_19_india.csv')
+
+    country_data = df["State/UnionTerritory"]
+    confirmed_data = df["ConfirmedIndianNational"]  
+    
+    plt.pie(confirmed_data, labels=country_data, shadow=True, startangle=140)
+    
+    plt.title("Confirmed cases of corona virus in India")
+    plt.show()
+'''
 main()
