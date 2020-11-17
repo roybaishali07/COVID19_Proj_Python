@@ -50,8 +50,8 @@ Please execute this following command(s) in your terminal to resolve this issue.
 
 def main():
     while (True):
-        print("************************************")
-        print("\n\nWelcome to corona world!")
+        print("\n************************************")
+        print("Welcome to corona world!")
         print("************************************")
         print("\n1.To explore to world wide data")
         print("2.To explore nation wise data")
@@ -77,13 +77,21 @@ def main():
 
 def worldMenu():
     while(True):
-
-        print("\n\n1.For world map")
+        print("\n===========================================")
+        print("Data visualisation::::")
+        print("1.For world map")
         print("2.For pie chart")
         print("3.For line chart")
         print("4.For scatter plot")
         print("5.For choropleth chart")
+        print("========================================")
+        print("\n========================================")
+        print("Read data from file in different ways::::")
+        print("6.Read complete csv file:")
+        print("7.Reading complete file without index::")
+        print("========================================")
         print("0.Return to previous menu")
+        
         print("#.To exit")
 
         ch = input("\nEnter your choice : ")
@@ -107,6 +115,13 @@ def worldMenu():
         if ch == '5':
             choroplethPlot()
             continue
+
+        if ch == '6':
+            csv_file()
+            continue
+
+        if ch == '7':
+            no_indx()
         
         if ch == '0':
             break
@@ -159,24 +174,53 @@ def worldMap():
 
 
 def pieChart():
-    slices = [62, 142, 195]
-    activities = ['Travel', 'Place Visit', 'Unknown']
+    df = pd.read_csv("assets/final.csv")
+    top = int(input("Select the number of countries you want to visualize from top:"))
+    
+    st = df['country'].head(top)
+    ncases = df['new_cases'].head(top)
+    ndth = df['new_deaths'].head(top)
+    tcases = df['total_cases'].head(top)
+    tdth = df['total_deaths'].head(top)
 
-    cols=['#4C8BE2','#00e061','#fe073a']
-    exp = [0.2,0.02,0.02]
+    plt.xlabel("Country")
+    plt.xticks(rotation = 'vertical')
+
+    print("Select Specific Pie Chart as given below:")
+    print("press 1 to print the data for Country vs New Cases")
+    print("press 2 to print the data for Country vs New death  Cases")
+    print("press 3 to print the data for Country vs Total Cases")
+    print("press 4 to print the data for Country vs Total Death Cases")
+
+    ch = int(input("Enter your choice:"))
+
+    if ch == 1:
+        plt.style.use('dark_background')
+        plt.title("State wise new cases")
+        plt.pie(ncases,labels = st,autopct = "%3d%%")
+        plt.show()
+
+    if ch == 2:
+        plt.style.use('dark_background')
+        plt.title("State wise new death cases")
+        plt.pie(ndth,labels = st,autopct = "%3d%%")
+        plt.show()
     
-    plt.pie(slices,
-            labels=activities, 
-            textprops=dict(size=10,color='black'),
-            radius=1,
-            colors=cols,
-            autopct='%2.2f%%',
-            explode=exp,
-            shadow=True,
-            startangle=90)
+    if ch == 3:
+        plt.style.use('dark_background')
+        plt.title("State wise total cases")
+        plt.pie(tcases,labels = st,autopct = "%3d%%")
+        plt.show()
+
+    if ch == 4:
+        plt.style.use('dark_background')
+        plt.title("State wise  total death cases")
+        plt.pie(tdth,labels = st,autopct = "%3d%%")
+        plt.show()
     
-    plt.title('Transmission\n\n\n\n',color='#4fb4f2',size=40)
-    plt.show()
+    else:
+        print("Invalid input")
+
 
 def lineChart():
     data = pd.read_csv('case_time_series.csv') 
@@ -225,12 +269,32 @@ def lineChart():
     plt.show()
 
 def scatterPlot():
-    data=pd.read_csv("case_time_series.csv")
-    from pandas.plotting import scatter_matrix
+    df = pd.read_csv("assets/final.csv")
+
     plt.style.use('dark_background')
-    df = pd.DataFrame(data)
-    scatter_matrix(df)
+    
+    st = df['country']
+    cnf = df['total_cases']
+    rc = df['new_cases']
+    dth = df['total_deaths']
+    ndth = df['new_deaths']
+    ax = plt.gca()
+    
+    ax.scatter(st,cnf,color = 'b',label = 'State wise total cases')
+    ax.scatter(st,rc,color = 'r',label = 'State wise new cases')
+    ax.scatter(st,dth,color = 'g',label = 'State wise total death death cases')
+    ax.scatter(st,ndth,color = 'violet',label = 'State wise new death death cases')
+
+
+    plt.xlabel("state")
+    plt.xticks(rotation = 'vertical')
+
+    plt.title('complete scatter chart')
+    plt.legend()
+
     plt.show()
+
+    
 
 def choroplethPlot():
 
@@ -275,30 +339,42 @@ def choroplethPlot():
 
     fig.write_html('first_figure.html', auto_open=True)
 
+def csv_file():
+    print('::::Reading Data from CSV File::::')
+    df = pd.read_csv("case_time_series.csv")
+    print(df)
+
+def no_indx():
+    print('::::Reading Data from CSV filr without index value::::')
+    df = pd.read_csv('case_time_series.csv',index_col = 0)
+    print(df)
+
 
 
 def countryMenu():
     while(True): 
-        print("*************************************")
-        print("\nRead data from file in different ways::::")
+        print("\n========================================")
+        print("Read data from file in different ways::::")
         print("1.Read complete csv file:")
         print("2.Reading complete file without index::")
-        print("***************************************")
+        print("========================================")
         
-        print("\nData visualization::::")
+        print("\n========================================")
+        print("Data visualization::::")
         print("3.For bar chart")
         print("4.For pie chart")
         print("5.For scatter plot")
         print("6.For line chart")
         print("========================================")
         
-        print('\nApply Data Manipulation in the record of CSV file::')
+        print("\n========================================")
+        print('Apply Data Manipulation in the record of CSV file::')
         print('7.Sorting data as per your choice:')
         print("8.Read top and bottom records from file as per requirement")
         print("9.Make the copy of csv file:")
         print('10.Read the specific columns')
         print('#.To exit')
-        print("***************************************************")
+        print("========================================")
 
 
         ch =  input("\nEnter your choice:")
@@ -329,13 +405,13 @@ def countryMenu():
             sortData()
         
         if ch == '8':
-            file()
+            top_bottom_records()
 
         if ch == '9':
-            copyCSV()
+            duplicate_csv()
 
         if ch == '10':
-            readColumns()
+            specific_col()
 
         if ch == "#":
             exit()
@@ -375,36 +451,40 @@ def bar_chart():
     op = int(input("Please enter your choice:"))
 
     if op == 1:
+        plt.style.use('dark_background')
         plt.ylabel("confirmed cases")
         plt.title("state wise confirmed cases")
         
-        plt.bar(st,cnf,color = 'pink')
-        
-        plt.style.use('dark_background')
+        plt.bar(st,cnf,color = 'pink',label = "Confirmed Cases")
+        plt.legend()
         plt.show()
 
     if op == 2:
+        plt.style.use('dark_background')
         plt.ylabel("cured cases")
         plt.title("state wise cured cases")
         
-        plt.bar(st,rc,color = 'green')
-        plt.style.use('dark_background')
+        plt.bar(st,rc,color = 'green',label = "Cured Cases")
+        plt.legend()
         
         plt.show()
 
     if op == 3:
+        plt.style.use('dark_background')
         plt.ylabel("death cases")
         
-        plt.title("state wise fth cases")
-        plt.bar(st,dth,color = 'red')
-        
-        plt.style.use('dark_background')
+        plt.title("state wise death cases")
+        plt.bar(st,dth,color = 'red',label = 'Death Cases')
+        plt.legend()
+
         plt.show()
     
     if op == 4:
+        plt.style.use('dark_background')
         plt.bar(st,cnf,width = 0.2,label = 'state wise confirmed cases')
         plt.bar(st,rc,width = 0.2,label = 'state wise cured cases')
         plt.bar(st,dth,width = 0.2,label = 'state wise death cases')
+        plt.title("Stack Bar Chart Of Confirmed,Cured and Death Cases")
         plt.legend()
         plt.show()
 
@@ -421,11 +501,12 @@ def bar_chart():
 
 def pie_chart():
     df = pd.read_csv("assets/covid_19_india.csv")
+    top = int(input("Select the number of countries you want to visualize from top:"))
     
-    st = df['State/UnionTerritory']
-    cnf = df['Confirmed']
-    rc = df['Cured']
-    dth = df['Deaths']
+    st = df['State/UnionTerritory'].head(top)
+    cnf = df['Confirmed'].head(top)
+    rc = df['Cured'].head(top)
+    dth = df['Deaths'].head(top)
 
     plt.xlabel("state")
     plt.xticks(rotation = 'vertical')
@@ -438,21 +519,21 @@ def pie_chart():
     ch = int(input("Enter your choice:"))
 
     if ch == 1:
+        plt.style.use('dark_background')
         plt.title("State wise confirmed cases")
         plt.pie(cnf,labels = st,autopct = "%3d%%")
-        plt.style.use('dark_background')
         plt.show()
 
     if ch == 2:
+        plt.style.use('dark_background')
         plt.title("State wise cured cases")
         plt.pie(rc,labels = st,autopct = "%3d%%")
-        plt.style.use('dark_background')
         plt.show()
 
     if ch == 3:
+        plt.style.use('dark_background')
         plt.title("State wise death cases")
         plt.pie(dth,labels = st,autopct = "%3d%%")
-        plt.style.use('dark_background')
         plt.show()
     
     else:
@@ -574,5 +655,32 @@ def sortData():
     
     else:
         print("Please enter valid input")
+
+def top_bottom_records():
+    df = pd.read_csv("assets/covid_19_india.csv")
+
+    top = int(input("How many records to display from top::"))
+    print("First",top,"records")
+    print(df.head(top))
+
+    bottom = int(input("How many records to display from top::"))
+    print("First",bottom,"records")
+    print(df.head(bottom))
+
+
+def duplicate_csv():
+    print("Duplicate the file with new file::")
+    df = pd.read_csv("assets/covid_19_india.csv")
+
+    df.to_csv("assets/covid_19_india.csv")
+
+    print("Data from the new file::")
+    print(df)
+
+def specific_col():
+    print("Readind specific column from CSV file")
+    df = pd.read_csv("assets/covid_19_india.csv",usecols = ['State/UnionTerritory','Cured'],index_col = 0)
+
+    print(df)
 
 main()
