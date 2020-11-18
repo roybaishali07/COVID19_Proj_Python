@@ -51,7 +51,7 @@ Please execute this following command(s) in your terminal to resolve this issue.
 def main():
     while (True):
         print("\n************************************")
-        print("Welcome to corona world!")
+        print("WELCOME TO CORONA WORLD!")
         print("************************************")
         print("\n1.To explore to world wide data")
         print("2.To explore nation wise data")
@@ -139,7 +139,7 @@ def worldMap():
     df = df.rename(columns= {"Country/Region" : "Country", "Province/State": "Province"})
     df.head()
 
-    df['text'] = df['Country'] + " " + df["10/11/20"].astype(str)
+    df['text'] = df['Country'] + " " + df["11/17/20"].astype(str)
     fig = go.Figure(data = go.Scattergeo(
         lon = df["Long"],
         lat = df["Lat"],
@@ -170,7 +170,7 @@ def worldMap():
         )
     )
 
-    fig.write_html('first_figure.html', auto_open=True)
+    fig.write_html('world_map.html', auto_open=True)
 
 
 def pieChart():
@@ -256,8 +256,8 @@ def lineChart():
             arrowprops=dict(color='white', 
                             linewidth=0.025)) 
 
-    plt.title("COVID-19 IN : Daily Confrimed\n", 
-            size=50,color='#28a9ff') 
+    plt.title("COVID-19 IN : Daily ConfIrmed\n", 
+            size=40,color='#28a9ff',fontstyle = "italic") 
 
     ax.plot(X,Y, 
         color='#1F77B4', 
@@ -301,7 +301,7 @@ def choroplethPlot():
     df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
     df = df.rename(columns= {"Country/Region" : "Country", "Province/State": "Province"})
 
-    total_list = df.groupby('Country')['4/13/20'].sum().tolist()
+    total_list = df.groupby('Country')['11/17/20'].sum().tolist()
 
     country_list = df["Country"].tolist()
     country_set = set(country_list)
@@ -355,13 +355,15 @@ def countryMenu():
     while(True): 
         print("\n========================================")
         print("Read data from file in different ways::::")
-        print("1.Read complete csv file:")
+        print("-------------------------------------------")
+        print("\n1.Read complete csv file:")
         print("2.Reading complete file without index::")
         print("========================================")
         
         print("\n========================================")
         print("Data visualization::::")
-        print("3.For bar chart")
+        print("------------------------------------------")
+        print("\n3.For bar chart")
         print("4.For pie chart")
         print("5.For scatter plot")
         print("6.For line chart")
@@ -369,10 +371,12 @@ def countryMenu():
         
         print("\n========================================")
         print('Apply Data Manipulation in the record of CSV file::')
-        print('7.Sorting data as per your choice:')
+        print("-------------------------------------------------------")
+        print('\n7.Sorting data as per your choice:')
         print("8.Read top and bottom records from file as per requirement")
         print("9.Make the copy of csv file:")
         print('10.Read the specific columns')
+        print("0.Return to previous menu")
         print('#.To exit')
         print("========================================")
 
@@ -412,6 +416,9 @@ def countryMenu():
 
         if ch == '10':
             specific_col()
+        
+        if  ch == '0':
+            break
 
         if ch == "#":
             exit()
@@ -442,18 +449,19 @@ def bar_chart():
     plt.xticks(rotation = 'vertical')
 
     print("Select Specific bar Chart as given below:")
-    print("press 1 to print the data for State vs Confirmed Cases")
-    print("press 2 to print the data for State vs Cured Cases")
-    print("press 3 to print the data for State vs Death Cases")
-    print("press 4 to print all the data in the form of stack bar chart")
-    print("press 5 to print all the data in the form of multibar bar chart")
+    print("\npress 1 to print the data for State vs Confirmed Cases")
+    print("\npress 2 to print the data for State vs Cured Cases")
+    print("\npress 3 to print the data for State vs Death Cases")
+    print("\npress 4 to print all the data in the form of stack bar chart")
+    print("\npress 5 to print all the data in the form of multibar bar chart")
+    print("\n0.Return to previous menu")
 
     op = int(input("Please enter your choice:"))
 
     if op == 1:
         plt.style.use('dark_background')
         plt.ylabel("confirmed cases")
-        plt.title("state wise confirmed cases")
+        plt.title("state wise confirmed cases",fontsize = 25,fontstyle = "italic",color = "purple")
         
         plt.bar(st,cnf,color = 'pink',label = "Confirmed Cases")
         plt.legend()
@@ -462,7 +470,7 @@ def bar_chart():
     if op == 2:
         plt.style.use('dark_background')
         plt.ylabel("cured cases")
-        plt.title("state wise cured cases")
+        plt.title("state wise cured cases",fontsize = 25,fontstyle = "italic",color = "yellow")
         
         plt.bar(st,rc,color = 'green',label = "Cured Cases")
         plt.legend()
@@ -473,7 +481,7 @@ def bar_chart():
         plt.style.use('dark_background')
         plt.ylabel("death cases")
         
-        plt.title("state wise death cases")
+        plt.title("state wise death cases",fontsize = 25,fontstyle = "italic",color = "orange")
         plt.bar(st,dth,color = 'red',label = 'Death Cases')
         plt.legend()
 
@@ -499,6 +507,7 @@ def bar_chart():
         plt.legend()
         plt.show()
 
+
 def pie_chart():
     df = pd.read_csv("assets/covid_19_india.csv")
     top = int(input("Select the number of countries you want to visualize from top:"))
@@ -520,7 +529,7 @@ def pie_chart():
 
     if ch == 1:
         plt.style.use('dark_background')
-        plt.title("State wise confirmed cases")
+        plt.title("State wise confirmed cases",fontsize = 25,fontstyle = "italic",color = "green")
         plt.pie(cnf,labels = st,autopct = "%3d%%")
         plt.show()
 
@@ -532,7 +541,7 @@ def pie_chart():
 
     if ch == 3:
         plt.style.use('dark_background')
-        plt.title("State wise death cases")
+        plt.title("State wise death cases",fontsize = 25,fontstyle = "italic",color = "green")
         plt.pie(dth,labels = st,autopct = "%3d%%")
         plt.show()
     
@@ -557,7 +566,7 @@ def scatter_chart():
     plt.xlabel("state")
     plt.xticks(rotation = 'vertical')
 
-    plt.title('complete scatter chart')
+    plt.title('complete scatter chart',fontsize = 25,fontstyle = "italic",color = "green")
     plt.legend()
 
     plt.show()
@@ -586,7 +595,7 @@ def lineCh():
 
     if opt == 1:
         plt.ylabel('Confirmed cases:')
-        plt.title('State vs Confirmed Cases')
+        plt.title('State vs Confirmed Cases',fontsize = 25,fontstyle = "italic",color = "green")
         
         plt.plot(st,cnf,color = 'yellow',marker = "*",linestyle = 'dashed')
         plt.style.use('dark_background')
@@ -595,7 +604,7 @@ def lineCh():
     
     if opt == 2:
         plt.ylabel('Cured cases:')
-        plt.title('State vs Cured Cases')
+        plt.title('State vs Cured Cases',fontsize = 25,fontstyle = "italic",color = "green")
         
         plt.plot(st,rc,color = 'green',marker = "*",linestyle = 'dotted')
         plt.style.use('dark_background')
@@ -604,7 +613,7 @@ def lineCh():
     
     if opt == 3:
         plt.ylabel('Death cases:')
-        plt.title('State vs Death Cases')
+        plt.title('State vs Death Cases',fontsize = 25,fontstyle = "italic",color = "green")
         
         plt.plot(st,dth,color = 'pink',marker = "*",linestyle = 'dashed')
         plt.style.use('dark_background')
@@ -682,5 +691,6 @@ def specific_col():
     df = pd.read_csv("assets/covid_19_india.csv",usecols = ['State/UnionTerritory','Cured'],index_col = 0)
 
     print(df)
+
 
 main()
