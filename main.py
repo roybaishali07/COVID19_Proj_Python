@@ -39,13 +39,15 @@ try:
 except:
     missing.append("plotly")
 
-#import baishali as goru
+
 if missing != []:
     print(f'''\n\nYou are missing {len(missing)} package(s) in your system that are required to run this program.
 Please execute this following command(s) in your terminal to resolve this issue.''')
+
     for i in missing:
         print(f"\nMissing : {i}\nCommand : {requirement[i]}")
-    exit()
+    e
+    xit()
 
 
 def main():
@@ -174,8 +176,11 @@ def worldMap():
 
 
 def pieChart():
+    #read csv file
     df = pd.read_csv("assets/final.csv")
     top = int(input("Select the number of countries you want to visualize from top:"))
+
+    #manipulate dataframe
     
     st = df['country'].head(top)
     ncases = df['new_cases'].head(top)
@@ -186,6 +191,8 @@ def pieChart():
     plt.xlabel("Country")
     plt.xticks(rotation = 'vertical')
 
+    #options and creating pie chart
+    
     print("Select Specific Pie Chart as given below:")
     print("press 1 to print the data for Country vs New Cases")
     print("press 2 to print the data for Country vs New death  Cases")
@@ -223,16 +230,22 @@ def pieChart():
 
 
 def lineChart():
+    #read csv file
     data = pd.read_csv('case_time_series.csv') 
 
+    #manipulate dataframe
     Y = data.iloc[61:,1].values  
     R = data.iloc[61:,3].values  
     D = data.iloc[61:,5].values   
     X = data.iloc[61:,0]  
 
-    plt.figure(figsize=(25,8)) 
+    #figure size of our line chart
+    plt.figure(figsize=(25,8))
+
+    # for dark background
     plt.style.use('dark_background')
 
+    #plotting line chart
     ax = plt.axes() 
     ax.grid(linewidth=0.4, color='#8f8f8f')  
 
@@ -243,7 +256,7 @@ def lineChart():
 
     plt.xticks(rotation='vertical',size='20',color='white') 
     plt.yticks(size=20,color='white') 
-    plt.tick_params(size=20,color='white') 
+    plt.tick_params(size=20,color='white')
 
     for i,j in zip(X,Y): 
         ax.annotate(str(j),xy=(i,j+100),color='white',size='13') 
@@ -269,17 +282,21 @@ def lineChart():
     plt.show()
 
 def scatterPlot():
+    #read csv file
     df = pd.read_csv("assets/final.csv")
 
+    # for dark_background
     plt.style.use('dark_background')
-    
+
+    #manipulate dataframe
     st = df['country']
     cnf = df['total_cases']
     rc = df['new_cases']
     dth = df['total_deaths']
     ndth = df['new_deaths']
     ax = plt.gca()
-    
+
+    #Create the scatter ploth
     ax.scatter(st,cnf,color = 'b',label = 'State wise total cases')
     ax.scatter(st,rc,color = 'r',label = 'State wise new cases')
     ax.scatter(st,dth,color = 'g',label = 'State wise total death death cases')
@@ -297,10 +314,15 @@ def scatterPlot():
     
 
 def choroplethPlot():
-
+    #read data
+    
     df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
+
+    #rename columns
     df = df.rename(columns= {"Country/Region" : "Country", "Province/State": "Province"})
 
+    # manipulate the dataframe
+    
     total_list = df.groupby('Country')['11/17/20'].sum().tolist()
 
     country_list = df["Country"].tolist()
@@ -316,6 +338,7 @@ def choroplethPlot():
             "#FE5E19", "#FA520A", "#FA2B0A", "#9B1803",  "#861604", "#651104", "#570303",]
 
 
+    #Create the Chropleth
     fig = go.Figure(
         data=go.Choropleth(
             locationmode = "country names",
@@ -337,7 +360,7 @@ def choroplethPlot():
         ),
     )
 
-    fig.write_html('first_figure.html', auto_open=True)
+    fig.write_html('choropleth_map.html', auto_open=True)
 
 def csv_file():
     print('::::Reading Data from CSV File::::')
@@ -672,7 +695,7 @@ def top_bottom_records():
     print("First",top,"records")
     print(df.head(top))
 
-    bottom = int(input("How many records to display from top::"))
+    bottom = int(input("How many records to display from bottom::"))
     print("First",bottom,"records")
     print(df.head(bottom))
 
