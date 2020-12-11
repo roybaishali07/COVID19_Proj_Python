@@ -13,14 +13,18 @@ try:
 except:
     missing.append("geopandas")
 
+try:
+    from matplotlib.ticker import MaxNLocator
+except:
+    missing.append("matplotlib.ticker")
+
 try :
-    import numpy as np#no problem😇
+    import numpy as np
 except:
     missing.append("numpy")
 
 try:
     import matplotlib.pyplot as plt
-    from matplotlib.ticker import MaxNLocator
 #import coronavirus as cv
 except:
     missing.append("matplotlib")
@@ -217,19 +221,19 @@ def pieChart():
         plt.pie(ncases,labels = st,autopct = "%3d%%")
         plt.show()
 
-    if ch == 2:
+    elif ch == 2:
         plt.style.use('dark_background')
         plt.title("State wise new death cases")
         plt.pie(ndth,labels = st,autopct = "%3d%%")
         plt.show()
     
-    if ch == 3:
+    elif ch == 3:
         plt.style.use('dark_background')
         plt.title("State wise total cases")
         plt.pie(tcases,labels = st,autopct = "%3d%%")
         plt.show()
 
-    if ch == 4:
+    elif ch == 4:
         plt.style.use('dark_background')
         plt.title("State wise  total death cases")
         plt.pie(tdth,labels = st,autopct = "%3d%%")
@@ -386,8 +390,6 @@ def no_indx():
 
 def countryMenu():
     while(True): 
-        clear_scr()
-        print("COUNTRY MENU")
         print("\n========================================")
         print("Read data from file in different ways::::")
         print("-------------------------------------------")
@@ -470,12 +472,15 @@ def readCSV():
 
 def no_index():
     print('::::Reading Data from CSV filr without index value::::')
+
+    #read csv
     df = pd.read_csv('assets/covid_19_india.csv',index_col = 0)
     print(df)
 
 def bar_chart():
     df = pd.read_csv("assets/covid_19_india.csv")
     
+    #manipulate df
     st = df['State/UnionTerritory']
     cnf = df['Confirmed']
     rc = df['Cured']
@@ -545,9 +550,11 @@ def bar_chart():
 
 
 def pie_chart():
+    #read csv
     df = pd.read_csv("assets/covid_19_india.csv")
     top = int(input("Select the number of countries you want to visualize from top:"))
     
+    #manipulate dataframe
     st = df['State/UnionTerritory'].head(top)
     cnf = df['Confirmed'].head(top)
     rc = df['Cured'].head(top)
@@ -585,8 +592,10 @@ def pie_chart():
         print("Invalid input")
 
 def scatter_chart():
+    #read csv file
     df = pd.read_csv("assets/covid_19_india.csv")
     
+    #manipulate dataframe
     st = df['State/UnionTerritory']
     cnf = df['Confirmed']
     rc = df['Cured']
@@ -596,9 +605,11 @@ def scatter_chart():
     ax.scatter(st,cnf,color = 'b',label = 'State wise confirmed cases')
     ax.scatter(st,rc,color = 'r',label = 'State wise cured cases')
     ax.scatter(st,dth,color = 'g',label = 'State wise death cases')
-
+    
+    #for dark background
     plt.style.use('dark_background')
-
+    
+    #labelling and plotting scatter plot
     plt.xlabel("state")
     plt.xticks(rotation = 'vertical')
 
@@ -610,8 +621,10 @@ def scatter_chart():
 
 
 def lineCh():
+    #read csv file
     df = pd.read_csv("assets/covid_19_india.csv")
     
+    #manipulate dataframe
     st = df['State/UnionTerritory']
     cnf = df['Confirmed']
     rc = df['Cured']
@@ -638,7 +651,7 @@ def lineCh():
         
         plt.show()
     
-    if opt == 2:
+    elif opt == 2:
         plt.ylabel('Cured cases:')
         plt.title('State vs Cured Cases',fontsize = 25,fontstyle = "italic",color = "green")
         
@@ -647,24 +660,33 @@ def lineCh():
         
         plt.show()
     
-    if opt == 3:
+    elif opt == 3:
+        #labelling
         plt.ylabel('Death cases:')
+
+        #giving title 
         plt.title('State vs Death Cases',fontsize = 25,fontstyle = "italic",color = "green")
         
+        #plotting
         plt.plot(st,dth,color = 'pink',marker = "*",linestyle = 'dashed')
+
+        #for dark background
         plt.style.use('dark_background')
         
         plt.show()
     
-    if opt == 4:
+    elif opt == 4:
+        #labelling
         plt.ylabel("No of cases")
         
+        #plotting
         plt.plot(st,cnf,color = 'yellow',marker = "*",label = 'State wise confirmed cases')
         plt.plot(st,rc,color = 'green',marker = "*", label = 'State wise cured cases')
         plt.plot(st,dth,color = 'black',marker = "*",label = 'State wise death cases')
         
         plt.legend()
-
+        
+        #for dark background
         plt.style.use('dark_background')
         plt.show()
 
@@ -686,15 +708,15 @@ def sortData():
         df.sort_values(['State/UnionTerritory'],inplace = True)
         print(df)
     
-    if ch == 2:
+    elif ch == 2:
         df.sort_values(['Confirmed'],inplace = True)
         print(df)
     
-    if ch == 3:
+    elif ch == 3:
         df.sort_values(['Cured'],inplace = True)
         print(df)
 
-    if ch == 3:
+    elif ch == 3:
         df.sort_values(['Deaths'],inplace = True)
         print(df)
     
@@ -702,8 +724,9 @@ def sortData():
         print("Please enter valid input")
 
 def top_bottom_records():
+    #read csv
     df = pd.read_csv("assets/covid_19_india.csv")
-
+    
     top = int(input("How many records to display from top::"))
     print("First",top,"records")
     print(df.head(top))
@@ -715,8 +738,10 @@ def top_bottom_records():
 
 def duplicate_csv():
     print("Duplicate the file with new file::")
+    #read csv file
     df = pd.read_csv("assets/covid_19_india.csv")
-
+    
+    #converting dataframe to csv
     df.to_csv("assets/covid_19_india.csv")
 
     print("Data from the new file::")
@@ -724,6 +749,8 @@ def duplicate_csv():
 
 def specific_col():
     print("Readind specific column from CSV file")
+
+    #read csv
     df = pd.read_csv("assets/covid_19_india.csv",usecols = ['State/UnionTerritory','Cured'],index_col = 0)
 
     print(df)
