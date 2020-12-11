@@ -417,37 +417,37 @@ def countryMenu():
         if ch == '1':
             readCSV()
         
-        if ch == '2':
+        elif ch == '2':
             no_index()
 
-        if ch == '3':
+        elif ch == '3':
             bar_chart()
 
-        if ch == '4':
+        elif ch == '4':
             pie_chart()
 
-        if ch == '5':
+        elif ch == '5':
             scatter_chart()
         
-        if ch == '6':
+        elif ch == '6':
             lineCh()
 
-        if ch == '7':
+        elif ch == '7':
             sortData()
         
-        if ch == '8':
+        elif ch == '8':
             top_bottom_records()
 
-        if ch == '9':
+        elif ch == '9':
             duplicate_csv()
 
-        if ch == '10':
+        elif ch == '10':
             specific_col()
         
-        if  ch == '0':
+        elif  ch == '0':
             break
 
-        if ch == "#":
+        elif ch == "#":
             exit()
 
         else:
@@ -481,11 +481,11 @@ def bar_chart():
 
     print("Select Specific bar Chart as given below:")
     print("\npress 1 to print the data for State vs Confirmed Cases")
-    print("\npress 2 to print the data for State vs Cured Cases")
-    print("\npress 3 to print the data for State vs Death Cases")
-    print("\npress 4 to print all the data in the form of stack bar chart")
-    print("\npress 5 to print all the data in the form of multibar bar chart")
-    print("\n0.Return to previous menu")
+    print("press 2 to print the data for State vs Cured Cases")
+    print("press 3 to print the data for State vs Death Cases")
+    print("press 4 to print all the data in the form of stack bar chart")
+    print("press 5 to print all the data in the form of multibar bar chart")
+    print("0.Return to previous menu")
 
     op = int(input("Please enter your choice:"))
 
@@ -498,7 +498,7 @@ def bar_chart():
         plt.legend()
         plt.show()
 
-    if op == 2:
+    elif op == 2:
         plt.style.use('dark_background')
         plt.ylabel("cured cases")
         plt.title("state wise cured cases",fontsize = 25,fontstyle = "italic",color = "yellow")
@@ -508,7 +508,7 @@ def bar_chart():
         
         plt.show()
 
-    if op == 3:
+    elif op == 3:
         plt.style.use('dark_background')
         plt.ylabel("death cases")
         
@@ -518,7 +518,7 @@ def bar_chart():
 
         plt.show()
     
-    if op == 4:
+    elif op == 4:
         plt.style.use('dark_background')
         plt.bar(st,cnf,width = 0.2,label = 'state wise confirmed cases')
         plt.bar(st,rc,width = 0.2,label = 'state wise cured cases')
@@ -527,7 +527,7 @@ def bar_chart():
         plt.legend()
         plt.show()
 
-    if op == 5:
+    elif op == 5:
         ind = np.arange(len(st))
         width = 0.25
         
@@ -706,7 +706,7 @@ def sortData():
         df.sort_values(['Cured'],inplace = True)
         print(df)
 
-    elif ch == 3:
+    elif ch == 4:
         df.sort_values(['Deaths'],inplace = True)
         print(df)
     
