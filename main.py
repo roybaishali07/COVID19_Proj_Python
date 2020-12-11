@@ -1,8 +1,8 @@
 
-from matplotlib.ticker import MaxNLocator
 requirement = {"pandas": "python -m pip install pandas", "geopandas": "python -m pip install geopandas", "numpy": "python -m pip install numpy", "matplotlib": "python -m pip install matplotlib", "altair": "python -m pip install altair", "folium": "python -m pip install folium", "plotly": "python -m pip install plotly"}
 missing = []
 
+import os
 try:
     import pandas as pd
 except:
@@ -20,6 +20,7 @@ except:
 
 try:
     import matplotlib.pyplot as plt
+    from matplotlib.ticker import MaxNLocator
 #import coronavirus as cv
 except:
     missing.append("matplotlib")
@@ -46,15 +47,21 @@ Please execute this following command(s) in your terminal to resolve this issue.
 
     for i in missing:
         print(f"\nMissing : {i}\nCommand : {requirement[i]}")
-    e
-    xit()
+    exit()
 
+def clear_scr():
+    if os.name = "nt":
+        os.system("cls")
+    
+    else:
+        os.system("clear")
 
 def main():
     while (True):
+        clear_scr()
         print("\n************************************")
         print("WELCOME TO CORONA WORLD!")
-        print("************************************")
+        print("**************************************")
         print("\n1.To explore to world wide data")
         print("2.To explore nation wise data")
         print("#.To quit")
@@ -79,6 +86,8 @@ def main():
 
 def worldMenu():
     while(True):
+        clear_scr
+        print("WORLD MENU")
         print("\n===========================================")
         print("Data visualisation::::")
         print("1.For world map")
@@ -134,6 +143,7 @@ def worldMenu():
         else:
             print("Wrong input, Try again!")
             continue
+        input("Press Enter to continue")
 
 def worldMap():
     df = pd.read_csv("assets/time_series_covid19_confirmed_global.csv")
@@ -376,6 +386,8 @@ def no_indx():
 
 def countryMenu():
     while(True): 
+        clear_scr()
+        print("COUNTRY MENU")
         print("\n========================================")
         print("Read data from file in different ways::::")
         print("-------------------------------------------")
@@ -449,6 +461,7 @@ def countryMenu():
         else:
             print("Wrong input, Try again!")
             continue
+        input("Press Enter to continue.")
 
 def readCSV():
     print('::::Reading Data from CSV File::::')
