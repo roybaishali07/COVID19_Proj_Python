@@ -54,7 +54,7 @@ Please execute this following command(s) in your terminal to resolve this issue.
     exit()
 
 def clear_scr():
-    if os.name = "nt":
+    if os.name == "nt":
         os.system("cls")
     
     else:
@@ -63,9 +63,9 @@ def clear_scr():
 def main():
     while (True):
         clear_scr()
-        print("\n************************************")
-        print("WELCOME TO CORONA WORLD!")
-        print("**************************************")
+        print("\n********************************************************")
+        print("WELCOME TO THE WORLD OF CORONA VIRUS!LET'S GET INFECTED!")
+        print("***********************************************************")
         print("\n1.To explore to world wide data")
         print("2.To explore nation wise data")
         print("#.To quit")
@@ -90,7 +90,7 @@ def main():
 
 def worldMenu():
     while(True):
-        clear_scr
+        clear_scr()
         print("WORLD MENU")
         print("\n===========================================")
         print("Data visualisation::::")
@@ -115,33 +115,33 @@ def worldMenu():
             worldMap()
             continue
 
-        if ch == '2':
+        elif ch == '2':
             pieChart()
             continue
 
-        if ch == '3':
+        elif ch == '3':
             lineChart()
             continue
 
-        if ch == '4':
+        elif ch == '4':
             scatterPlot()
             continue
         
-        if ch == '5':
+        elif ch == '5':
             choroplethPlot()
             continue
 
-        if ch == '6':
+        elif ch == '6':
             csv_file()
             continue
 
-        if ch == '7':
+        elif ch == '7':
             no_indx()
         
-        if ch == '0':
+        elif ch == '0':
             break
 
-        if ch == "#":
+        elif ch == "#":
             exit()
 
         else:
@@ -217,25 +217,25 @@ def pieChart():
 
     if ch == 1:
         plt.style.use('dark_background')
-        plt.title("State wise new cases")
+        plt.title("Country vs New  Cases")
         plt.pie(ncases,labels = st,autopct = "%3d%%")
         plt.show()
 
     elif ch == 2:
         plt.style.use('dark_background')
-        plt.title("State wise new death cases")
+        plt.title("Country vs New death  Cases")
         plt.pie(ndth,labels = st,autopct = "%3d%%")
         plt.show()
     
     elif ch == 3:
         plt.style.use('dark_background')
-        plt.title("State wise total cases")
+        plt.title("Country vs Total Cases")
         plt.pie(tcases,labels = st,autopct = "%3d%%")
         plt.show()
 
     elif ch == 4:
         plt.style.use('dark_background')
-        plt.title("State wise  total death cases")
+        plt.title("country vs total death cases")
         plt.pie(tdth,labels = st,autopct = "%3d%%")
         plt.show()
     
