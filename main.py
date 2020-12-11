@@ -113,27 +113,21 @@ def worldMenu():
 
         if ch == '1':
             worldMap()
-            continue
 
         elif ch == '2':
             pieChart()
-            continue
 
         elif ch == '3':
             lineChart()
-            continue
 
         elif ch == '4':
             scatterPlot()
-            continue
         
         elif ch == '5':
             choroplethPlot()
-            continue
 
         elif ch == '6':
             csv_file()
-            continue
 
         elif ch == '7':
             no_indx()
@@ -146,7 +140,7 @@ def worldMenu():
 
         else:
             print("Wrong input, Try again!")
-            continue
+
         input("Press Enter to continue")
 
 def worldMap():
@@ -422,19 +416,15 @@ def countryMenu():
 
         if ch == '1':
             readCSV()
-            continue
         
         if ch == '2':
-            no_index()  
-            continue
+            no_index()
 
         if ch == '3':
             bar_chart()
-            continue
 
         if ch == '4':
             pie_chart()
-            continue
 
         if ch == '5':
             scatter_chart()
@@ -462,7 +452,7 @@ def countryMenu():
 
         else:
             print("Wrong input, Try again!")
-            continue
+
         input("Press Enter to continue.")
 
 def readCSV():
