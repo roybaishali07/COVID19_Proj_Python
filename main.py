@@ -305,10 +305,10 @@ def scatterPlot():
     ax = plt.gca()
 
     #Create the scatter ploth
-    ax.scatter(st,cnf,color = 'b',label = 'State wise total cases')
-    ax.scatter(st,rc,color = 'r',label = 'State wise new cases')
-    ax.scatter(st,dth,color = 'g',label = 'State wise total death death cases')
-    ax.scatter(st,ndth,color = 'violet',label = 'State wise new death death cases')
+    ax.scatter(st,cnf,color = 'b',label = 'total cases')
+    ax.scatter(st,rc,color = 'r',label = 'new cases')
+    ax.scatter(st,dth,color = 'g',label = 'total death death cases')
+    ax.scatter(st,ndth,color = 'violet',label = 'death death cases')
 
 
     plt.xlabel("state")
